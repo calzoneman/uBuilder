@@ -21,7 +21,7 @@ namespace uBuilder
             {
                 StringBuilder msg = new StringBuilder();
                 msg.Append(pl.GetFormattedName());
-                msg.Append("&e is ranked " + Rank.GetColor(pl.rank) + Rank.RankName(pl.rank));
+                msg.Append("&e is ranked " + Rank.GetColor(pl.rank) + Rank.RankName(pl.rank) + "&e(" + pl.rank + ")");
                 msg.Append("&e and is connected from IP &b" + pl.ip);
                 p.SendMessage(0x00, msg.ToString());
                 Account a = Program.server.accounts[pl.username.ToLower()];

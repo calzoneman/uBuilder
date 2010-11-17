@@ -17,7 +17,7 @@ namespace uBuilder
     {
         public ConsolePlayer() : base(null, "127.0.0.1", 0xFF)
         {
-            base.rank = 0xFF;
+            base.rank = Rank.MAX_RANK;
             base.username = "[console]";
         }
 

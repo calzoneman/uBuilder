@@ -40,6 +40,7 @@ namespace uBuilder
             commands.Add("me", new Command(MeCommand.Me, Rank.RankLevel("guest")));
             commands.Add("newworld", new Command(WorldCommand.NewWorld, Rank.RankLevel("owner")));
             commands.Add("operator", new Command(ChangeRankCommand.Operator, Rank.RankLevel("owner")));
+            commands.Add("owner", new Command(ChangeRankCommand.Owner, Rank.MAX_RANK));
             commands.Add("paint", new Command(BuildCommand.Paint, Rank.RankLevel("player")));
 
             commands.Add("paste", new Command(CopyCommand.Paste, Rank.RankLevel("operator")));
@@ -47,6 +48,7 @@ namespace uBuilder
             commands.Add("place", new Command(PlaceCommand.Place, Rank.RankLevel("player")));
             commands.Add("player", new Command(ChangeRankCommand.Player, Rank.RankLevel("operator")));
             commands.Add("ranks", new Command(HelpCommand.Ranks, Rank.RankLevel("guest")));
+            commands.Add("rankset", new Command(ChangeRankCommand.RankSet, Rank.RankLevel("operator")));
             commands.Add("replace", new Command(BuildCommand.Replace, Rank.RankLevel("operator")));
             commands.Add("r", commands["replace"]);
             commands.Add("replacenot", new Command(BuildCommand.ReplaceNot, Rank.RankLevel("operator")));
@@ -73,7 +75,7 @@ namespace uBuilder
             consoleSafe.Add("kick",     commands["kick"]);
             consoleSafe.Add("me",       commands["me"]);
             consoleSafe.Add("newworld", commands["newworld"]);
-            consoleSafe.Add("owner",    new Command(ChangeRankCommand.Owner, Rank.RankLevel("owner")));
+            consoleSafe.Add("owner",    commands["owner"]);
             consoleSafe.Add("operator", commands["operator"]);
             consoleSafe.Add("player",   commands["player"]);
             consoleSafe.Add("ranks",    commands["ranks"]);
@@ -128,6 +130,8 @@ namespace uBuilder
                 case "guest":
                 case "player":
                 case "operator":
+                case "owner":
+                case "rankset":
                     ChangeRankCommand.Help(p, cmd);
                     break;
                 case "help":
@@ -183,9 +187,9 @@ namespace uBuilder
         }
 
         public CommandHandler handler;
-        public byte minRank;
+        public ushort minRank;
 
-        public Command(CommandHandler handler, byte minRank)
+        public Command(CommandHandler handler, ushort minRank)
         {
             this.handler = handler;
             this.minRank = minRank;

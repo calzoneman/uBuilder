@@ -15,23 +15,16 @@ namespace uBuilder
 {
     public class Rank
     {
-        public static string RankName(byte permissionLevel)
+        public const ushort MAX_RANK = ushort.MaxValue;
+        public const ushort MIN_RANK = ushort.MinValue;
+        public static string RankName(ushort permissionLevel)
         {
-            switch (permissionLevel)
-            {
-                case 0:
-                    return "none";
-                case 1:
-                    return "guest";
-                case 16:
-                    return "player";
-                case 128:
-                    return "operator";
-                case 255:
-                    return "owner";
-                default:
-                    return "none";
-            }
+            if(permissionLevel == 0) return "none";
+            else if(permissionLevel < 16) return "guest";
+            else if(permissionLevel < 128) return "player";
+            else if(permissionLevel < 255) return "operator";
+            else if(permissionLevel >= 255) return "owner";
+            else return "none";
         }
 
         public static byte RankLevel(string name)
@@ -53,23 +46,14 @@ namespace uBuilder
             }
         }
 
-        public static string GetColor(byte ranklevel)
+        public static string GetColor(ushort ranklevel)
         {
-            switch (ranklevel)
-            {
-                case 0:
-                    return "&0";
-                case 1:
-                    return "&7";
-                case 16:
-                    return "&f";
-                case 128:
-                    return "&9";
-                case 255:
-                    return "&4";
-                default:
-                    return "&7";
-            }
+            if (ranklevel == 0) return "&0";
+            else if(ranklevel < 16) return "&7";
+            else if(ranklevel < 128) return "&f";
+            else if(ranklevel < 255) return "&9";
+            else if(ranklevel >= 255) return "&4";
+            else return "&7";
         }
 
         public static string GetColor(string rankName)

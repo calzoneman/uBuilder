@@ -35,7 +35,28 @@ namespace uBuilder
             Base(p, message, Rank.RankLevel("owner"));
         }
 
-        public static void Base(Player p, string message, byte newrank)
+        public static void RankSet(Player p, string message)
+        {
+            if (!message.Trim().Contains(" "))
+            {
+                p.SendMessage(0xFF, "No arguments specified!");
+                return;
+            }
+
+            try
+            {
+                ushort newRank = ushort.Parse(message.Trim().Substring(message.Trim().LastIndexOf(" ")).Trim());
+                message = message.Trim().Substring(0, message.Trim().LastIndexOf(" ")).Trim();
+                Base(p, message, newRank);
+            }
+            catch
+            {
+                p.SendMessage(0xFF, "Something went wrong!  Check your input for errors");
+            }
+        }
+
+
+        public static void Base(Player p, string message, ushort newrank)
         {
             if (message.Trim().Equals(""))
             {
@@ -52,7 +73,7 @@ namespace uBuilder
                 }
                 if (pl.rank < newrank || p.rank > pl.rank || p.username.Equals("[console]"))
                 {
-                    byte oldRank = pl.rank;
+                    ushort oldRank = pl.rank;
                     pl.rank = newrank;
                     Program.server.playerRanksDict[pl.username.ToLower()] = pl.rank;
                     Program.server.saveRanks();
@@ -61,15 +82,15 @@ namespace uBuilder
                     {
                         pl.prefix = "[:(]";
                     }
-                    else if (newrank < Rank.RankLevel("operator"))
+                    if (newrank < Rank.RankLevel("operator"))
                     {
                         pl.prefix = "";
                     }
-                    else if (newrank == Rank.RankLevel("operator"))
+                    if (newrank >= Rank.RankLevel("operator"))
                     {
                         pl.prefix = "+";
                     }
-                    else if (newrank == Rank.RankLevel("owner"))
+                    if (newrank >= Rank.RankLevel("owner"))
                     {
                         pl.prefix = "@";
                     }
@@ -106,7 +127,7 @@ namespace uBuilder
                         }
                     }
                     uBuilder.Player.GlobalSpawnPlayer(pl);
-                    uBuilder.Player.GlobalMessage(p.GetFormattedName() + "&e set " + pl.GetFormattedName() + "&e's rank to " + Rank.GetColor(newrank) + Rank.RankName(newrank) + "&e");
+                    uBuilder.Player.GlobalMessage(p.GetFormattedName() + "&e set " + pl.GetFormattedName() + "&e's rank to " + Rank.GetColor(newrank) + Rank.RankName(newrank) + "&e(" + newrank + ")");
                 }
                 else
                 {
@@ -118,6 +139,11 @@ namespace uBuilder
 
         public static void Help(Player p, string cmd)
         {
+            if (cmd.Equals("rankset"))
+            {
+                p.SendMessage(0xFF, "/rankset player number - Sets player's rank to the number specified (0-65534)");
+                return;
+            }
             p.SendMessage(0xFF, "/" + cmd + " player - set player's rank to " + cmd);
         }
     }

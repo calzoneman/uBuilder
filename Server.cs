@@ -49,7 +49,7 @@ namespace uBuilder
         public System.Threading.Thread physThread;
 
         //Ranks
-        public Dictionary<string, byte> playerRanksDict;
+        public Dictionary<string, ushort> playerRanksDict;
 
         //TcpListener
         public TcpListener listener;
@@ -174,7 +174,7 @@ namespace uBuilder
             Player.specialChars.Add(@"\dn", (char)31);       //▼
 
             //Load ranks
-            playerRanksDict = new Dictionary<string, byte>();
+            playerRanksDict = new Dictionary<string, ushort>();
             try
             {
                 if (File.Exists("ranks.txt"))
@@ -186,7 +186,7 @@ namespace uBuilder
                         if (line != null && !line.Equals("") && line.IndexOf(':') >= 0)
                         {
                             string user = line.Substring(0, line.IndexOf(':'));
-                            byte rank = byte.Parse(line.Substring(line.IndexOf(':') + 1));
+                            ushort rank = ushort.Parse(line.Substring(line.IndexOf(':') + 1));
                             playerRanksDict.Add(user, rank);
                         }
                     }
@@ -333,7 +333,7 @@ namespace uBuilder
             try
             {
                 StreamWriter sw = new StreamWriter(File.Open("ranks.txt", FileMode.OpenOrCreate, FileAccess.Write));
-                foreach (KeyValuePair<string, byte> k in this.playerRanksDict)
+                foreach (KeyValuePair<string, ushort> k in this.playerRanksDict)
                 {
                     sw.WriteLine(k.Key + ":" + k.Value.ToString());
                 }

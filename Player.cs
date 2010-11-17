@@ -33,7 +33,7 @@ namespace uBuilder
         public bool loggedIn = false;
         public int loginTmr = 0;
         public byte id;
-        public byte rank = 0x01; //Guest
+        public ushort rank = 0x01; //Guest
         public bool disconnected = false;
         public Bindings binding = Bindings.None;
         public bool painting = false;
@@ -320,8 +320,8 @@ namespace uBuilder
             TeleportBlockCheck.Init(this);
 
             //If they are ranked operator or admin, give them a snazzy prefix
-            if (rank == Rank.RankLevel("operator")) { prefix = "+"; }
-            if (rank == Rank.RankLevel("owner")) { prefix = "@"; }
+            if (rank >= Rank.RankLevel("operator")) { prefix = "+"; }
+            if (rank >= Rank.RankLevel("owner")) { prefix = "@"; }
 
             //Send the map
             this.SendPacket(new Packet(new byte[1] { (byte)ServerPacket.MapBegin }));
