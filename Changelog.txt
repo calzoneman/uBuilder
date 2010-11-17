@@ -1,0 +1,15 @@
+﻿/**
+ * uBuilder - A lightweight custom Minecraft Classic server written in C#
+ * Copyright 2010 Calvin "calzoneman" Montgomery
+ * 
+ * Licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License
+ * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
+ */
+ 
+ Revision 01
+ -----------
+ [ADD] - Everything from uMiner
+ [ADD] - Copy/paste with save/load for clipboard
+ [ADD] - Message blocks
+ [ADD] - Teleport blocks (look like TNT, can only be removed via /tpdel)
+ [FIX] - Fix a heartbeat / verify-names issue
