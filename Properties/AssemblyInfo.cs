@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("uBuilder")]
-[assembly: AssemblyDescription("A lightly featured Minecraft Classic server written in C#")]
+[assembly: AssemblyDescription("A Minecraft classic server based on uMiner")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CzTech")]
 [assembly: AssemblyProduct("uBuilder")]
@@ -41,5 +41,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.23")]
-[assembly: AssemblyFileVersion("0.23")]
+[assembly: AssemblyVersion("0.02")]
+[assembly: AssemblyFileVersion("0.02")]

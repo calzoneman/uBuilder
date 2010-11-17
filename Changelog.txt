@@ -6,6 +6,10 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 02
+ -----------
+ [FIX] - Committed wrong bin/ directory last time.  My bad.
+ 
  Revision 01
  -----------
  [ADD] - Everything from uMiner
