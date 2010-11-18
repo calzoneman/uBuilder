@@ -127,7 +127,7 @@ namespace uBuilder
             advPhysics = new AdvancedPhysics(world);
             this.physThread = new System.Threading.Thread(PhysicsUpdateLoop);
             physThread.Start();
-            logger.log("Started BasicPhysics Engine");
+            logger.log("Started Physics Thread");
 
             //Intercept Ctrl+C
             Console.CancelKeyPress += new ConsoleCancelEventHandler(delegate
@@ -197,7 +197,7 @@ namespace uBuilder
             }
             catch (OverflowException)
             {
-                logger.log("Error while loading ranks: rank cannot be higher than 255", Logger.LogType.Error);
+                logger.log("Error while loading ranks: rank cannot be higher than 65535", Logger.LogType.Error);
                 running = false;
                 return;
             }
@@ -270,6 +270,7 @@ namespace uBuilder
         public void Run()
         {
             worldSaveTimer.Start();
+            worldBackupTimer.Start();
             while (true)  //Main Loop
             {
                 if (!running) { return; }
