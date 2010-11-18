@@ -62,6 +62,8 @@ namespace uBuilder
         //Custom blocks
         public const byte unflood           = (byte)100;
         public const byte teleportBlock     = (byte)101;
+        public const byte door              = (byte)102;
+        public const byte doorOpen   = (byte)103;
         #endregion
 
         public static Dictionary<string, byte> blockNames = new Dictionary<string, byte>();
@@ -156,9 +158,25 @@ namespace uBuilder
             blockNames.Add("teleportblock", teleportBlock);
             blockNames.Add("tpblock", teleportBlock);
             blockNames.Add("teleport_block", teleportBlock);
+            blockNames.Add("door", door);
+            blockNames.Add("doorOpen", doorOpen);
 
             conversions.Add(Blocks.unflood, Blocks.air);
             conversions.Add(Blocks.teleportBlock, Blocks.tnt);
+            conversions.Add(Blocks.door, Blocks.trunk);
+            conversions.Add(Blocks.doorOpen, Blocks.air);
+        }
+
+        public static bool AdvancedPhysics(byte type)
+        {
+            switch (type)
+            {
+                case door:
+                case doorOpen:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public static bool BasicPhysics(byte type)

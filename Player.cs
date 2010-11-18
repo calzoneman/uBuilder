@@ -487,6 +487,26 @@ namespace uBuilder
                 }
             }
 
+            if (mapBlock == Blocks.doorOpen && !(OnBlockchange != null || binding == Bindings.Air))
+            {
+                SendMessage(0xFF, "That block cannot be changed.");
+                SendBlock((short)x, (short)y, (short)z, Blocks.air);
+                return;
+            }
+
+            if (mapBlock == Blocks.door)
+            {
+                if (action == 0)
+                {
+                    if (OnBlockchange == null)
+                    {
+                        Program.server.advPhysics.Queue(x, y, z, Blocks.door, PhysType.Door, new object[] { (byte)mapBlock });
+                        return;
+                    }
+                }
+                else return;
+            }
+
             if (action == 1 || painting)
             {
                 Program.server.accounts[username.ToLower()].PlaceBlock();
@@ -549,7 +569,7 @@ namespace uBuilder
             block.Append(x);
             block.Append(y);
             block.Append(z);
-            block.Append(type);
+            block.Append(Blocks.ConvertType(type));
             this.SendPacket(block);
         }
 

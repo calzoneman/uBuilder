@@ -6,6 +6,15 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 04 - Doors
+ -----------
+ [ADD] - AdvancedPhysics class with an instance in Server
+ [ADD] - Blocktypes `door` and `doorOpen`
+ [ADD] - Door physics to AdvancedPhysics
+ [FIX] - Player.SendBlock() now converts types, preventing crashes
+ [ADD] - Bindings for air, doublestair(dstair), and door
+ NOTE -- Doors can be removed by placing air (/place air) while they are in the open state.
+ 
  Revision 03 - Updated ranks system
  -----------
  [CHG] - Player ranks are now stored as ushorts, allowing for a range of 0-65535.  Existing ranks should still work fine.

@@ -143,6 +143,9 @@ namespace uBuilder
                         case Blocks.unflood:
                             saveblocks[i] = Blocks.ConvertType(saveblocks[i]);
                             break;
+                        case Blocks.doorOpen:
+                            saveblocks[i] = Blocks.door;
+                            break;
                         default:
                             break;
                     }

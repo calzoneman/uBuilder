@@ -46,6 +46,7 @@ namespace uBuilder
         public System.Timers.Timer worldSaveTimer;
         public System.Timers.Timer worldBackupTimer;
         public BasicPhysics physics;
+        public AdvancedPhysics advPhysics;
         public System.Threading.Thread physThread;
 
         //Ranks
@@ -123,6 +124,7 @@ namespace uBuilder
             });
 
             physics = new BasicPhysics(world, lavaSpongeEnabled);
+            advPhysics = new AdvancedPhysics(world);
             this.physThread = new System.Threading.Thread(PhysicsUpdateLoop);
             physThread.Start();
             logger.log("Started BasicPhysics Engine");
@@ -290,6 +292,7 @@ namespace uBuilder
                 {
                     DateTime start = DateTime.Now;
                     physics.Update();
+                    advPhysics.Update();
                     TimeSpan took = DateTime.Now - start;
                     if (took.TotalMilliseconds < 200)
                     {

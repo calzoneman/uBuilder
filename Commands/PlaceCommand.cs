@@ -87,6 +87,20 @@ namespace uBuilder
                         p.SendMessage(0xFF, "You are not allowed to use that binding!");
                     }
                     break;
+
+                case "doublestair":
+                case "dstair":
+                    p.binding = Bindings.DoubleStair;
+                    p.SendMessage(0xFF, "Binding set to &7doublestair");
+                    break;
+                case "door":
+                    p.binding = Bindings.Door;
+                    p.SendMessage(0xFF, "Binding set to &6door");
+                    break;
+                case "air":
+                    p.binding = Bindings.Air;
+                    p.SendMessage(0xFF, "Binding set to &fair");
+                    break;
                 default:
                     Help(p);
                     break;
@@ -98,7 +112,7 @@ namespace uBuilder
         {
             p.SendMessage(0xFF, "/place binding - Binds stone to binding");
             p.SendMessage(0xFF, "-> Bindings in () are alternatives that do the same thing");
-            string available = "&9safewater(sw)&e, &csafelava(sl)&e, &fnone(off)&e, &agrass";
+            string available = "&9safewater(sw)&e, &csafelava(sl)&e, &fnone(off)&e, &agrass, &7doublestair(dstair)&e, &6door&e, &fair";
             if (p.rank >= Rank.RankLevel("operator"))
             {
                 available += "&e, &0admin(adminium, admincrete)&e, &1activewater(aw)&e, &4activelava(al)&e, &funflood(deflood, air_flood)";
@@ -110,6 +124,7 @@ namespace uBuilder
 
     public enum Bindings
     {
+        Air = 0,
         None = 1,
         Grass = 2,
         Adminium = 7,
@@ -117,6 +132,8 @@ namespace uBuilder
         SafeWater = 9,
         ActiveLava = 10,
         SafeLava = 11,
-        Unflood = 100
+        DoubleStair = 43,
+        Unflood = 100,
+        Door = 102
     }
 }
