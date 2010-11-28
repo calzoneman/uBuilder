@@ -62,8 +62,13 @@ namespace uBuilder
         //Custom blocks
         public const byte unflood           = (byte)100;
         public const byte teleportBlock     = (byte)101;
+        //Doors
         public const byte door              = (byte)102;
-        public const byte doorOpen   = (byte)103;
+        public const byte doorOpen          = (byte)103;
+        public const byte irondoor          = (byte)104;
+        public const byte irondoorOpen      = (byte)105;
+        public const byte darkgreydoor      = (byte)106;
+        public const byte darkgreydoorOpen  = (byte)107;
         #endregion
 
         public static Dictionary<string, byte> blockNames = new Dictionary<string, byte>();
@@ -160,11 +165,19 @@ namespace uBuilder
             blockNames.Add("teleport_block", teleportBlock);
             blockNames.Add("door", door);
             blockNames.Add("doorOpen", doorOpen);
+            blockNames.Add("irondoor", irondoor);
+            blockNames.Add("irondoorOpen", irondoorOpen);
+            blockNames.Add("darkgreydoor", darkgreydoor);
+            blockNames.Add("darkgreydoorOpen", darkgreydoorOpen);
 
             conversions.Add(Blocks.unflood, Blocks.air);
             conversions.Add(Blocks.teleportBlock, Blocks.tnt);
             conversions.Add(Blocks.door, Blocks.trunk);
             conversions.Add(Blocks.doorOpen, Blocks.air);
+            conversions.Add(Blocks.irondoor, Blocks.ironsolid);
+            conversions.Add(Blocks.irondoorOpen, Blocks.air);
+            conversions.Add(Blocks.darkgreydoor, Blocks.darkgrey);
+            conversions.Add(Blocks.darkgreydoorOpen, Blocks.air);
         }
 
         public static bool AdvancedPhysics(byte type)
@@ -173,6 +186,10 @@ namespace uBuilder
             {
                 case door:
                 case doorOpen:
+                case irondoor:
+                case irondoorOpen:
+                case darkgreydoor:
+                case darkgreydoorOpen:
                     return true;
                 default:
                     return false;
@@ -238,6 +255,21 @@ namespace uBuilder
                     return true;
                 default:
                     return false;
+            }
+        }
+
+        public static byte DoorOpenType(byte doorType)
+        {
+            switch (doorType)
+            {
+                case Blocks.door:
+                    return Blocks.doorOpen;
+                case Blocks.irondoor:
+                    return Blocks.irondoorOpen;
+                case Blocks.darkgreydoor:
+                    return Blocks.darkgreydoorOpen;
+                default:
+                    return Blocks.air;
             }
         }
 

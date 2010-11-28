@@ -41,6 +41,7 @@ namespace uBuilder
         public CuboidParameters cParams;
         public TeleportBlockParams tParams;
         public short[] lastTeleport = new short[] { 0, 0, 0 };
+        public int[] lastFlyPos = new int[] { 0, 0, 0 };
         public string messageBlockText = "";
         public Block[] copyClipboard = null;
 
@@ -318,6 +319,7 @@ namespace uBuilder
             //ExamplePlugins.Init(this);
             MessageBlockCheck.Init(this);
             TeleportBlockCheck.Init(this);
+            //OnMovement += new PositionChangeHandler(FlyCommand.FlyMove);
 
             //If they are ranked operator or admin, give them a snazzy prefix
             if (rank >= Rank.RankLevel("operator")) { prefix = "+"; }
@@ -487,20 +489,20 @@ namespace uBuilder
                 }
             }
 
-            if (mapBlock == Blocks.doorOpen && !(OnBlockchange != null || binding == Bindings.Air))
+            if ((mapBlock == Blocks.doorOpen || mapBlock == Blocks.irondoorOpen || mapBlock == Blocks.darkgreydoorOpen) && !(OnBlockchange != null || binding == Bindings.Air))
             {
                 SendMessage(0xFF, "That block cannot be changed.");
                 SendBlock((short)x, (short)y, (short)z, Blocks.air);
                 return;
             }
 
-            if (mapBlock == Blocks.door)
+            if (mapBlock == Blocks.door || mapBlock == Blocks.irondoor || mapBlock == Blocks.darkgreydoor)
             {
                 if (action == 0)
                 {
                     if (OnBlockchange == null)
                     {
-                        Program.server.advPhysics.Queue(x, y, z, Blocks.door, PhysType.Door, new object[] { (byte)mapBlock });
+                        Program.server.advPhysics.Queue(x, y, z, mapBlock, PhysType.Door, new object[] { Blocks.DoorOpenType(mapBlock) });
                         return;
                     }
                 }
@@ -881,25 +883,32 @@ namespace uBuilder
         #region Disconnecting
         public void Disconnect(bool silent)
         {
-            if (this.disconnected) { return; }
-            this.loggedIn = false;
-            this.disconnected = true;
-            if (!silent)
+            try
             {
-                GlobalMessage(GetFormattedName() + "&e disconnected.");
-                foreach (Player pl in Program.server.playerlist)
+                if (this.disconnected) { return; }
+                this.loggedIn = false;
+
+                if (!silent)
                 {
-                    if (pl != null && pl.loggedIn)
+                    GlobalMessage(GetFormattedName() + "&e disconnected.");
+                    foreach (Player pl in Program.server.playerlist)
                     {
-                        pl.outputWriter.Write((byte)ServerPacket.PlayerDie);
-                        pl.outputWriter.Write(this.id);
+                        if (pl != null && pl.loggedIn)
+                        {
+                            pl.outputWriter.Write((byte)ServerPacket.PlayerDie);
+                            pl.outputWriter.Write(this.id);
+                        }
                     }
                 }
+                Program.server.logger.log(username + "(" + ip + ") disconnected.");
+                Program.server.playerlist[id] = null;
+                Program.server.plyCount--;
+                if (this.plyClient.Connected && !this.disconnected) { this.plyClient.Close(); }
+                this.disconnected = true;
             }
-            Program.server.logger.log(username + "(" + ip + ") disconnected.");
-            Program.server.playerlist[id] = null;
-            Program.server.plyCount--;
-            if (this.plyClient.Connected && !this.disconnected) { this.plyClient.Close(); }
+            catch
+            {
+            }
         }
         #endregion
 

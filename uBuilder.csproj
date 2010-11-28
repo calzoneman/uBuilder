@@ -65,6 +65,7 @@
     <Compile Include="Commands\ColorCommand.cs" />
     <Compile Include="Commands\CopyCommand.cs" />
     <Compile Include="Commands\DisconnectCommand.cs" />
+    <Compile Include="Commands\FlyCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\ChangeRankCommand.cs" />
     <Compile Include="Commands\MeCommand.cs" />

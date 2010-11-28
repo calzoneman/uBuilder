@@ -152,7 +152,7 @@ namespace uBuilder
         public static void OnFirstCorner(Player p, int x, int y, int z, byte type)
         {
             if (p.cParams.type == 0xFF) { p.cParams.type = type; }
-            p.ResetBlockHandler();
+            p.OnBlockchange -= new Player.BlockHandler(OnFirstCorner);
             p.SendBlock((short)x, (short)y, (short)z, p.world.GetTile(x, y, z));
             p.cParams.x1 = x;
             p.cParams.y1 = y;
@@ -163,7 +163,7 @@ namespace uBuilder
 
         public static void OnSecondCorner(Player p, int x2, int y2, int z2, byte type)
         {
-            p.ResetBlockHandler();
+            p.OnBlockchange -= new Player.BlockHandler(OnSecondCorner);
             p.SendBlock((short)x2, (short)y2, (short)z2, p.world.GetTile(x2, y2, z2));
             int x1 = p.cParams.x1, y1 = p.cParams.y1, z1 = p.cParams.z1;
             p.cParams.cuboidLock = true;
@@ -180,6 +180,7 @@ namespace uBuilder
             if (size > 20000 && p.rank <= Rank.RankLevel("operator"))
             {
                 p.SendMessage(0xFF, "You can't make a cuboid that large!");
+                p.cParams.cuboidLock = false;
                 return;
             }
             p.SendMessage(0xFF, "Cuboiding &c" + size + "&e blocks");
@@ -187,6 +188,8 @@ namespace uBuilder
             System.Threading.Thread cuboidThread = new System.Threading.Thread((System.Threading.ThreadStart)delegate
                 {
                     DateTime start = DateTime.Now;
+                    World cWorld = p.world;
+                    Account user = Program.server.accounts[p.username.ToLower()];
                     for (int nx = xMin; nx <= xMax; nx++)
                     {
                         for (int ny = yMin; ny <= yMax; ny++)
@@ -195,28 +198,33 @@ namespace uBuilder
                             {
                                 if (!p.cParams.replace && !p.cParams.replacenot)
                                 {
-                                    p.world.SetTile(nx, ny, nz, p.cParams.type);
-                                    if (p.cParams.type != 0) Program.server.accounts[p.username.ToLower()].PlaceBlock();
-                                    else Program.server.accounts[p.username.ToLower()].DeleteBlock();
-                                    System.Threading.Thread.Sleep(1);
+                                    if (cWorld.GetTile(nx, ny, nz) != p.cParams.type)
+                                    {
+                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
+                                        if (p.cParams.type != 0) user.PlaceBlock();
+                                        else user.DeleteBlock();
+                                        System.Threading.Thread.Sleep(1);
+                                    }
                                 }
                                 else if (p.cParams.replace)
                                 {
-                                    if (p.world.GetTile(nx, ny, nz) == p.cParams.replaceType)
+                                    if (cWorld.GetTile(nx, ny, nz) == p.cParams.replaceType)
                                     {
-                                        p.world.SetTile(nx, ny, nz, p.cParams.type);
-                                        Program.server.accounts[p.username.ToLower()].DeleteBlock();
-                                        if(p.cParams.type != 0) Program.server.accounts[p.username.ToLower()].PlaceBlock();
+                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
+                                        if (cWorld.GetTile(nx, ny, nz) != Blocks.air) user.DeleteBlock();
+                                        if (p.cParams.type != 0) user.PlaceBlock();
+                                        else user.DeleteBlock();
                                         System.Threading.Thread.Sleep(1);
                                     }
                                 }
                                 else if (p.cParams.replacenot)
                                 {
-                                    if (p.world.GetTile(nx, ny, nz) != p.cParams.replaceType)
+                                    if (cWorld.GetTile(nx, ny, nz) != p.cParams.replaceType)
                                     {
-                                        p.world.SetTile(nx, ny, nz, p.cParams.type);
-                                        Program.server.accounts[p.username.ToLower()].DeleteBlock();
-                                        if (p.cParams.type != 0) Program.server.accounts[p.username.ToLower()].PlaceBlock();
+                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
+                                        if (cWorld.GetTile(nx, ny, nz) != Blocks.air) user.DeleteBlock();
+                                        if (p.cParams.type != 0) user.PlaceBlock();
+                                        else user.DeleteBlock();
                                         System.Threading.Thread.Sleep(1);
                                     }
                                 }

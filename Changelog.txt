@@ -6,6 +6,12 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 06 - More doors, cuboid fix
+ -----------
+ [FIX] - Cuboids exceeding the limit for operators never unlocked p.cParams.cuboidLock
+ [CHG] - Cuboids are more efficient in some situations and correctly change player stats
+ [ADD] - irondoor and darkgreydoor - They work just like door but cannot open doors of other types
+ 
  Revision 05 - Fix Backup
  -----------
  [FIX] - Backup timer was never being started

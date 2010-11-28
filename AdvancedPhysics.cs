@@ -83,8 +83,8 @@ namespace uBuilder
                 Queue(tile.x, tile.y, tile.z - 1, type);
             }
 
-            world.SetTileNoPhysics(tile.x, tile.y, tile.z, Blocks.doorOpen);
-            Queue(tile.x, tile.y, tile.z, Blocks.doorOpen, PhysType.DoorOpen, new object[] { (byte)type });
+            world.SetTileNoPhysics(tile.x, tile.y, tile.z, (byte)tile.meta[0]);
+            Queue(tile.x, tile.y, tile.z, (byte)tile.meta[0], PhysType.DoorOpen, new object[] { (byte)type });
         }
 
         public void UpdateDoorOpen(AdvancedPhysicsTile tile)
@@ -99,7 +99,11 @@ namespace uBuilder
             switch(type)
             {
                 case Blocks.door:
-                    return Queue(x, y, z, type, PhysType.Door, new object[] { (byte)Blocks.door });
+                    return Queue(x, y, z, type, PhysType.Door, new object[] { (byte)Blocks.doorOpen });
+                case Blocks.irondoor:
+                    return Queue(x, y, z, type, PhysType.Door, new object[] { (byte)Blocks.irondoorOpen });
+                case Blocks.darkgreydoor:
+                    return Queue(x, y, z, type, PhysType.Door, new object[] { (byte)Blocks.darkgreydoorOpen });
                 default:
                     return false;
             }

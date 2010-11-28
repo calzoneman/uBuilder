@@ -52,11 +52,11 @@ namespace uBuilder
         public static void Ranks(Player p, string message)
         {
             p.SendMessage(0xFF, "Ranks: ");
-            p.SendMessage(0, "&4@owner &e(" + Rank.RankLevel("owner") + ")");
-            p.SendMessage(0, "&9+operator &e(" + Rank.RankLevel("operator") + ")");
-            p.SendMessage(0, "player &e(" + Rank.RankLevel("player") + ")");
-            p.SendMessage(0, "&7guest &e(" + Rank.RankLevel("guest") + ")");
-            p.SendMessage(0, "&0[:(]banned &e(" + Rank.RankLevel("none") + ")");
+            p.SendMessage(0, "&4@owner &e(" + Rank.RankLevel("owner") + "-" + Rank.MAX_RANK + ")");
+            p.SendMessage(0, "&9+operator &e(" + Rank.RankLevel("operator") + "-" + (Rank.RankLevel("owner") - 1) + ")");
+            p.SendMessage(0, "player &e(" + Rank.RankLevel("player") + "-" + (Rank.RankLevel("operator") - 1) + ")");
+            p.SendMessage(0, "&7guest &e(" + Rank.RankLevel("guest") + "-" + (Rank.RankLevel("player") - 1) + ")");
+            p.SendMessage(0, "&0[:(]banned &e(" + Rank.RankLevel("none") + "-" + (Rank.RankLevel("guest") - 1) + ")");
         }
     }
 }
