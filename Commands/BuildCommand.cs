@@ -58,6 +58,7 @@ namespace uBuilder
             p.cParams.replacenot = false;
             p.cParams.type = type;
             p.SendMessage(0xFF, "Change the block of the first corner");
+            p.cuboiding = true;
             p.OnBlockchange += new Player.BlockHandler(OnFirstCorner);
         }
 
@@ -151,7 +152,8 @@ namespace uBuilder
 
         public static void OnFirstCorner(Player p, int x, int y, int z, byte type)
         {
-            if (p.cParams.type == 0xFF) { p.cParams.type = type; }
+            if (p.cParams.type == 0xFF) { p.cParams.type = type; if(p.cuboiding) p.cuboiding = false; }
+            
             p.OnBlockchange -= new Player.BlockHandler(OnFirstCorner);
             p.SendBlock((short)x, (short)y, (short)z, p.world.GetTile(x, y, z));
             p.cParams.x1 = x;
@@ -200,9 +202,7 @@ namespace uBuilder
                                 {
                                     if (cWorld.GetTile(nx, ny, nz) != p.cParams.type)
                                     {
-                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
-                                        if (p.cParams.type != 0) user.PlaceBlock();
-                                        else user.DeleteBlock();
+                                        p.AuthenticateAndSetBlock(nx, ny, nz, p.cParams.type);
                                         System.Threading.Thread.Sleep(1);
                                     }
                                 }
@@ -210,10 +210,7 @@ namespace uBuilder
                                 {
                                     if (cWorld.GetTile(nx, ny, nz) == p.cParams.replaceType)
                                     {
-                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
-                                        if (cWorld.GetTile(nx, ny, nz) != Blocks.air) user.DeleteBlock();
-                                        if (p.cParams.type != 0) user.PlaceBlock();
-                                        else user.DeleteBlock();
+                                        p.AuthenticateAndSetBlock(nx, ny, nz, p.cParams.type);
                                         System.Threading.Thread.Sleep(1);
                                     }
                                 }
@@ -221,10 +218,7 @@ namespace uBuilder
                                 {
                                     if (cWorld.GetTile(nx, ny, nz) != p.cParams.replaceType)
                                     {
-                                        cWorld.SetTile(nx, ny, nz, p.cParams.type);
-                                        if (cWorld.GetTile(nx, ny, nz) != Blocks.air) user.DeleteBlock();
-                                        if (p.cParams.type != 0) user.PlaceBlock();
-                                        else user.DeleteBlock();
+                                        p.AuthenticateAndSetBlock(nx, ny, nz, p.cParams.type);
                                         System.Threading.Thread.Sleep(1);
                                     }
                                 }

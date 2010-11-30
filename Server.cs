@@ -511,7 +511,7 @@ namespace uBuilder
                 pInfo.WriteLine("}");
             }
             pInfo.Close();
-            logger.log("Saved account statistics");
+            //logger.log("Saved account statistics");
         }
     }
 }

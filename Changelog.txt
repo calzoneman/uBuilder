@@ -6,6 +6,12 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 07 - Non-spamming saving and backups
+ -----------
+ [CHG] - World only saves / backs up if a block has changed
+ [CHG] - Date string is only displayed when the date changes
+ [FIX] - Small fix regarding Cuboids and corners
+ 
  Revision 06 - More doors, cuboid fix
  -----------
  [FIX] - Cuboids exceeding the limit for operators never unlocked p.cParams.cuboidLock

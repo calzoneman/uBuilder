@@ -25,6 +25,9 @@ namespace uBuilder
         public Dictionary<int, string> messageBlocks;
         public Dictionary<int, int> teleportBlocks;
 
+        public bool blockChanged = false;
+        public DateTime lastSaveTime = DateTime.Now;
+
         public World(string filename)
         {
             try
@@ -103,6 +106,7 @@ namespace uBuilder
             }
             this.blocks[(y * this.depth + z) * this.width + x] = type;
             Player.GlobalBlockchange((short)x, (short)y, (short)z, Blocks.ConvertType(type));
+            blockChanged = true;
             return true;
         }
 
@@ -127,11 +131,13 @@ namespace uBuilder
             }
             this.blocks[(y * this.depth + z) * this.width + x] = type;
             Player.GlobalBlockchange((short)x, (short)y, (short)z, Blocks.ConvertType(type));
+            blockChanged = true;
             return true;
         }
 
         public void Save()
         {
+            if (!blockChanged) return; //Don't save if nothing happened
             try
             {
                 byte[] saveblocks = new byte[blocks.Length];
@@ -181,6 +187,8 @@ namespace uBuilder
                 tBlocksOut.Close();
 
                 Program.server.logger.log("Level \"" + this.name + "\" saved");
+                lastSaveTime = DateTime.Now;
+                blockChanged = false;
             }
             catch (Exception e)
             {
@@ -191,6 +199,7 @@ namespace uBuilder
 
         public void Backup()
         {
+            if (((TimeSpan)(DateTime.Now - lastSaveTime)).TotalSeconds > 600) return; //Don't back up if the map hasn't changed in 10 minutes
             try
             {
                 string name = "backups/" + this.name + "/" + DateTime.Now.ToFileTime().ToString();

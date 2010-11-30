@@ -36,10 +36,11 @@ namespace uBuilder
         public ushort rank = 0x01; //Guest
         public bool disconnected = false;
         public Bindings binding = Bindings.None;
-        public bool painting = false;
+        public bool painting = false, cuboiding = false;
         public byte holding = 1;
         public CuboidParameters cParams;
         public TeleportBlockParams tParams;
+        public ShapeArgs sArgs;
         public short[] lastTeleport = new short[] { 0, 0, 0 };
         public int[] lastFlyPos = new int[] { 0, 0, 0 };
         public string messageBlockText = "";
@@ -452,6 +453,35 @@ namespace uBuilder
 
             byte mapBlock = world.GetTile(x, y, z);
 
+            if (mapBlock == Blocks.door || mapBlock == Blocks.irondoor || mapBlock == Blocks.darkgreydoor)
+            {
+                if (action == 0)
+                {
+                    if (OnBlockchange == null)
+                    {
+                        Program.server.advPhysics.Queue(x, y, z, mapBlock, PhysType.Door, new object[] { Blocks.DoorOpenType(mapBlock) });
+                        return;
+                    }
+                }
+                else return;
+            }
+
+
+            if (action == 0)
+            {
+                if (!painting && !cuboiding)
+                {
+                    type = 0;
+                }
+            }
+            AuthenticateAndSetBlock(x, y, z, type);
+        }
+
+        public void AuthenticateAndSetBlock(int x, int y, int z, byte type)
+        {
+            byte mapBlock = world.GetTile(x, y, z);
+            if (rank == 0 || !loggedIn) return;
+
             if (type == 1 && this.binding != Bindings.None)
             {
                 type = (byte)this.binding;
@@ -479,12 +509,12 @@ namespace uBuilder
                 return;
             }
 
-            if (mapBlock == Blocks.teleportBlock && action == 0)
+            if (mapBlock == Blocks.teleportBlock)
             {
                 if (this.OnBlockchange != (BlockHandler)TeleportBlockCommand.BlockDeleted)
                 {
                     SendMessage(0xFF, "That block is a teleport block.  Use /tpdel to remove it.");
-                    SendBlock(x, y, z, Blocks.tnt);
+                    SendBlock((short)x, (short)y, (short)z, Blocks.tnt);
                     return;
                 }
             }
@@ -498,7 +528,7 @@ namespace uBuilder
 
             if (mapBlock == Blocks.door || mapBlock == Blocks.irondoor || mapBlock == Blocks.darkgreydoor)
             {
-                if (action == 0)
+                if (type == 0)
                 {
                     if (OnBlockchange == null)
                     {
@@ -509,11 +539,11 @@ namespace uBuilder
                 else return;
             }
 
-            if (action == 1 || painting)
+            if (type != 0 && type != mapBlock)
             {
                 Program.server.accounts[username.ToLower()].PlaceBlock();
             }
-            if(action == 0)
+            else if(type != mapBlock)
             {
                 Program.server.accounts[username.ToLower()].DeleteBlock();
             }
@@ -524,21 +554,11 @@ namespace uBuilder
                 return;
             }
 
-            holding = type;
-
-            if (action == 0)
+            if (type != mapBlock)
             {
-                if (!painting)
-                {
-                    type = 0;
-                }
-            }
-            if (!this.world.SetTile(x, y, z, type))
-            {
-                SendBlock(x, y, z, mapBlock);
+                if (!world.SetTile(x, y, z, type)) SendBlock((short)x, (short)y, (short)z, mapBlock);
             }
         }
-
 
         #endregion
 
