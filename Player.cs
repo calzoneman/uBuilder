@@ -35,6 +35,7 @@ namespace uBuilder
         public byte id;
         public ushort rank = 0x01; //Guest
         public bool disconnected = false;
+        //public Dictionary<string, object> buildMeta = new Dictionary<string, object>();
         public Bindings binding = Bindings.None;
         public bool painting = false, cuboiding = false;
         public byte holding = 1;
@@ -503,7 +504,7 @@ namespace uBuilder
                 return;
             }
 
-            if (type > 49 && type != (byte)this.binding)
+            if (type > 49 && type != (byte)this.binding && !Blocks.blockNames.ContainsValue(type))
             {
                 Kick("Illegal tile type", false);
                 return;
@@ -519,7 +520,7 @@ namespace uBuilder
                 }
             }
 
-            if ((mapBlock == Blocks.doorOpen || mapBlock == Blocks.irondoorOpen || mapBlock == Blocks.darkgreydoorOpen) && !(OnBlockchange != null || binding == Bindings.Air))
+            if ((mapBlock == Blocks.doorOpen || mapBlock == Blocks.irondoorOpen || mapBlock == Blocks.darkgreydoorOpen) && !(OnBlockchange != null || DrawThreadManager.Active_Thread(this) || (Bindings)binding == Bindings.Air))
             {
                 SendMessage(0xFF, "That block cannot be changed.");
                 SendBlock((short)x, (short)y, (short)z, Blocks.air);
@@ -530,13 +531,13 @@ namespace uBuilder
             {
                 if (type == 0)
                 {
-                    if (OnBlockchange == null)
+                    if (OnBlockchange == null && !DrawThreadManager.Active_Thread(this))
                     {
                         Program.server.advPhysics.Queue(x, y, z, mapBlock, PhysType.Door, new object[] { Blocks.DoorOpenType(mapBlock) });
                         return;
                     }
                 }
-                else return;
+                else if(!(OnBlockchange != null || DrawThreadManager.Active_Thread(this))) return;
             }
 
             if (type != 0 && type != mapBlock)

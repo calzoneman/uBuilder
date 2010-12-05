@@ -49,7 +49,7 @@ namespace uBuilder
             }
             else
             {
-                p.messageBlockText += message;
+                p.messageBlockText += Player.ParseColors(Player.ParseSpecialChar(message));
             }
         }
 

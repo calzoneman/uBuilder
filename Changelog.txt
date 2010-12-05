@@ -6,6 +6,11 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 08 - Fixed cuboid/painting bug
+ -----------
+ [FIX] - Cuboid was causing weird painting bugs.  Not anymore :)
+ [ADD] - /sphere, /circle, and /line - /circle can only draw flat horizontal circles
+ 
  Revision 07 - Non-spamming saving and backups
  -----------
  [CHG] - World only saves / backs up if a block has changed

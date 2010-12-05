@@ -16,7 +16,7 @@ namespace uBuilder
     public class Program
     {
         public static Server server = new Server(ServerType.ClassicBuild);
-        public const int revision = 7;
+        public const int revision = 8;
         static void Main(string[] args)
         {
             server.Init();

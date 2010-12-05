@@ -271,6 +271,7 @@ namespace uBuilder
         {
             worldSaveTimer.Start();
             worldBackupTimer.Start();
+            DrawThreadManager.Init();
             while (true)  //Main Loop
             {
                 if (!running) { return; }

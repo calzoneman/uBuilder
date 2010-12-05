@@ -15,6 +15,28 @@ namespace uBuilder
     public class BuildCommand
     {
 
+        public static void Abort(Player p, string message)
+        {
+            if (p.cParams.cuboidLock)
+            {
+                if (!DrawThreadManager.Terminate_Draw(p, 0))
+                {
+                    p.SendMessage(0xFF, "Abort attempt failed.");
+                }
+            }
+            else if (p.sArgs.shapeLock)
+            {
+                if (!DrawThreadManager.Terminate_Draw(p, 1))
+                {
+                    p.SendMessage(0xFF, "Abort attempt failed.");
+                }
+            }
+            else
+            {
+                p.SendMessage(0xFF, "No active draw threads.");
+            }
+        }
+
         public static void Paint(Player p, string message)
         {
             if (p.painting)
@@ -166,9 +188,11 @@ namespace uBuilder
         public static void OnSecondCorner(Player p, int x2, int y2, int z2, byte type)
         {
             p.OnBlockchange -= new Player.BlockHandler(OnSecondCorner);
+            p.cuboiding = false;
             p.SendBlock((short)x2, (short)y2, (short)z2, p.world.GetTile(x2, y2, z2));
             int x1 = p.cParams.x1, y1 = p.cParams.y1, z1 = p.cParams.z1;
             p.cParams.cuboidLock = true;
+
 
             int xMin = Math.Min(x1, x2);
             int yMin = Math.Min(y1, y2);
@@ -232,7 +256,7 @@ namespace uBuilder
                     p.cParams.cuboidLock = false;
                 });
             cuboidThread.Start();
-            
+            DrawThreadManager.cuboid_threads.Add(p, cuboidThread);
         }
 
 
@@ -241,6 +265,9 @@ namespace uBuilder
         {
             switch (message)
             {
+                case "abort":
+                    p.SendMessage(0xFF, "/abort - Cancels your active cuboids and shapes");
+                    break;
                 case "paint":
                     p.SendMessage(0xFF, "/paint - Toggles paint mode (delete blocks to replace them with what you are holding");
                     break;

@@ -21,8 +21,10 @@ namespace uBuilder
 
         public static void Init()
         {
+            commands.Add("abort", new Command(BuildCommand.Abort, Rank.RankLevel("operator")));
             commands.Add("ban", new Command(DisconnectCommand.Ban, Rank.RankLevel("operator")));
             commands.Add("chars", new Command(ColorCommand.Chars, Rank.RankLevel("guest")));
+            commands.Add("circle", new Command(ShapeCommand.Circle, Rank.RankLevel("operator")));
             commands.Add("colors", new Command(ColorCommand.Colors, Rank.RankLevel("player")));
 
             commands.Add("copy", new Command(CopyCommand.Copy, Rank.RankLevel("operator")));
@@ -34,6 +36,7 @@ namespace uBuilder
             commands.Add("help", new Command(HelpCommand.Help, Rank.RankLevel("guest")));
             commands.Add("ipban", new Command(DisconnectCommand.IpBan, Rank.RankLevel("operator")));
             commands.Add("kick", new Command(DisconnectCommand.Kick, Rank.RankLevel("operator")));
+            commands.Add("line", new Command(ShapeCommand.Line, Rank.RankLevel("player")));
             commands.Add("load", new Command(CopyCommand.Load, Rank.RankLevel("operator")));
             commands.Add("mb", new Command(MessageBlockCommand.AddMsgBlock, Rank.RankLevel("operator")));
             commands.Add("mbdel", new Command(MessageBlockCommand.RemoveMsgBlock, Rank.RankLevel("operator")));
@@ -58,6 +61,7 @@ namespace uBuilder
             commands.Add("say", new Command(SayCommand.Say, Rank.RankLevel("operator")));
             commands.Add("setspawn", new Command(WorldCommand.SetSpawn, Rank.RankLevel("operator")));
             commands.Add("spawn", new Command(WorldCommand.Spawn, Rank.RankLevel("guest")));
+            commands.Add("sphere", new Command(ShapeCommand.Sphere, Rank.RankLevel("operator")));
             commands.Add("tpblock", new Command(TeleportBlockCommand.TeleportBlock, Rank.RankLevel("operator")));
             commands.Add("tpdel", new Command(TeleportBlockCommand.TeleportBlockDelete, Rank.RankLevel("operator")));
             commands.Add("tp", new Command(TeleportCommand.Tp, Rank.RankLevel("player")));
@@ -166,6 +170,7 @@ namespace uBuilder
                 case "r":
                 case "replacenot":
                 case "rn":
+                case "abort":
                     BuildCommand.Help(p, cmd);
                     break;
                 case "say":
@@ -180,6 +185,11 @@ namespace uBuilder
                 case "tpblock":
                 case "tpdel":
                     TeleportBlockCommand.Help(p, cmd);
+                    break;
+                case "circle":
+                case "sphere":
+                case "line":
+                    ShapeCommand.Help(p, cmd);
                     break;
                 default:
                     break;

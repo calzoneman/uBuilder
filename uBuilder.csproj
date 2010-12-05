@@ -83,6 +83,7 @@
     <Compile Include="Heartbeat.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Packet.cs" />
+    <Compile Include="Plugins\DrawThreadManager.cs" />
     <Compile Include="Plugins\ExamplePlugins.cs" />
     <Compile Include="Plugins\MessageBlockCheck.cs" />
     <Compile Include="Plugins\TeleportBlockCheck.cs" />
