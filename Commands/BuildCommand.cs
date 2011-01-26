@@ -120,6 +120,7 @@ namespace uBuilder
                 return;
             }
 
+            p.cuboiding = true;
             p.cParams.replace = true;
             p.cParams.replacenot = false;
             p.cParams.type = type;
@@ -164,6 +165,7 @@ namespace uBuilder
                 return;
             }
 
+            p.cuboiding = true;
             p.cParams.replace = false;
             p.cParams.replacenot = true;
             p.cParams.type = type;
@@ -174,7 +176,7 @@ namespace uBuilder
 
         public static void OnFirstCorner(Player p, int x, int y, int z, byte type)
         {
-            if (p.cParams.type == 0xFF) { p.cParams.type = type; if(p.cuboiding) p.cuboiding = false; }
+            if (p.cParams.type == 0xFF) { p.cParams.type = type; }
             
             p.OnBlockchange -= new Player.BlockHandler(OnFirstCorner);
             p.SendBlock((short)x, (short)y, (short)z, p.world.GetTile(x, y, z));

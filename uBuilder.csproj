@@ -79,6 +79,7 @@
     <Compile Include="Commands\WhoCommand.cs" />
     <Compile Include="Commands\WorldCommand.cs" />
     <Compile Include="ConsolePlayer.cs" />
+    <Compile Include="PermissionSet.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Heartbeat.cs" />
     <Compile Include="Logger.cs" />

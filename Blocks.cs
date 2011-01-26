@@ -62,6 +62,7 @@ namespace uBuilder
         //Custom blocks
         public const byte unflood           = (byte)100;
         public const byte teleportBlock     = (byte)101;
+        public const byte snow              = (byte)108;
         //Doors
         public const byte door              = (byte)102;
         public const byte doorOpen          = (byte)103;
@@ -163,6 +164,7 @@ namespace uBuilder
             blockNames.Add("teleportblock", teleportBlock);
             blockNames.Add("tpblock", teleportBlock);
             blockNames.Add("teleport_block", teleportBlock);
+            blockNames.Add("snow", snow);
             blockNames.Add("door", door);
             blockNames.Add("doorOpen", doorOpen);
             blockNames.Add("irondoor", irondoor);
@@ -172,6 +174,7 @@ namespace uBuilder
 
             conversions.Add(Blocks.unflood, Blocks.air);
             conversions.Add(Blocks.teleportBlock, Blocks.tnt);
+            conversions.Add(Blocks.snow, Blocks.white);
             conversions.Add(Blocks.door, Blocks.trunk);
             conversions.Add(Blocks.doorOpen, Blocks.air);
             conversions.Add(Blocks.irondoor, Blocks.ironsolid);
@@ -208,6 +211,7 @@ namespace uBuilder
                 case unflood:
                 case sand:
                 case gravel:
+                case snow:
                     return true;
                 default:
                     return false;
@@ -252,6 +256,7 @@ namespace uBuilder
             {
                 case sand:
                 case gravel:
+                case snow:
                     return true;
                 default:
                     return false;

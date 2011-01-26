@@ -8,6 +8,7 @@ namespace uBuilder
     {
         //Static members
         public static PermissionSet Banned = new PermissionSet(false, true, false, false, false, false);
+        public static PermissionSet Guest = new PermissionSet(true, true, false, false, false, false);
         public static PermissionSet Player = new PermissionSet(true, true, false, false, false, false);
         public static PermissionSet Operator = new PermissionSet(true, true, true, true, true, true);
         public static PermissionSet Owner = new PermissionSet(true, true, true, true, true, true);

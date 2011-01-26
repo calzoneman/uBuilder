@@ -43,9 +43,12 @@ namespace uBuilder
         public TeleportBlockParams tParams;
         public ShapeArgs sArgs;
         public short[] lastTeleport = new short[] { 0, 0, 0 };
+        public bool flying = false;
         public int[] lastFlyPos = new int[] { 0, 0, 0 };
+        public List<Block> flyBlocks = null;
         public string messageBlockText = "";
         public Block[] copyClipboard = null;
+        public PermissionSet currentPermissions = PermissionSet.Guest;
 
         public World world;
 
@@ -275,6 +278,8 @@ namespace uBuilder
                 return;
             }
 
+            currentPermissions = Rank.Permissions(rank);
+
             //Send a response
             this.outputWriter.Write((byte)ServerPacket.Login);
             this.outputWriter.Write((byte)Protocol.version); // Protocol version
@@ -486,6 +491,17 @@ namespace uBuilder
             if (type == 1 && this.binding != Bindings.None)
             {
                 type = (byte)this.binding;
+            }
+
+            if (type == 0 && flyBlocks != null)
+            {
+                Block fly = flyBlocks.Find(b => b.x == (short)x && b.y == (short)y && b.z == (short)z);
+                if (fly != null)
+                {
+                    SendBlock(fly.x, fly.y, fly.z, Blocks.air);
+                    SendBlock(fly.x, (short)(fly.y - 1), fly.z, Blocks.glass);
+                    return;
+                }
             }
 
             if (mapBlock == 7 && rank < Rank.RankLevel("operator"))

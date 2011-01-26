@@ -6,6 +6,10 @@
  * (see http://creativecommons.org/licenses/by-sa/3.0/, or LICENSE.txt for a full license
  */
  
+ Revision 09 - Fixed Heartbeat
+ -----------
+ [FIX] - Notch's heartbeat server no longer accepts POST requests.  Switched to GET.
+ 
  Revision 08 - Fixed cuboid/painting bug
  -----------
  [FIX] - Cuboid was causing weird painting bugs.  Not anymore :)

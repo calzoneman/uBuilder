@@ -32,6 +32,7 @@ namespace uBuilder
             commands.Add("cuboid", new Command(BuildCommand.Cuboid, Rank.RankLevel("operator")));
             commands.Add("c", commands["cuboid"]);
             commands.Add("fetch", new Command(TeleportCommand.Fetch, Rank.RankLevel("operator")));
+            commands.Add("fly", new Command(FlyCommand.Fly, Rank.RankLevel("player")));
             commands.Add("guest", new Command(ChangeRankCommand.Guest, Rank.RankLevel("operator")));
             commands.Add("help", new Command(HelpCommand.Help, Rank.RankLevel("guest")));
             commands.Add("ipban", new Command(DisconnectCommand.IpBan, Rank.RankLevel("operator")));
@@ -190,6 +191,9 @@ namespace uBuilder
                 case "sphere":
                 case "line":
                     ShapeCommand.Help(p, cmd);
+                    break;
+                case "fly":
+                    FlyCommand.Help(p);
                     break;
                 default:
                     break;

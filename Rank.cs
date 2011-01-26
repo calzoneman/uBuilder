@@ -46,6 +46,15 @@ namespace uBuilder
             }
         }
 
+        public static PermissionSet Permissions(ushort rank)
+        {
+            if (rank == 0) { return PermissionSet.Banned; }
+            else if (rank < 16) { return PermissionSet.Guest; }
+            else if (rank < 128) { return PermissionSet.Player; }
+            else if (rank < 255) { return PermissionSet.Operator; }
+            else { return PermissionSet.Owner; }
+        }
+
         public static string GetColor(ushort ranklevel)
         {
             if (ranklevel == 0) return "&0";

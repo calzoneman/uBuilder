@@ -110,6 +110,18 @@ namespace uBuilder
             return true;
         }
 
+        public bool PlayerSetTile(int x, int y, int z, byte type, PermissionSet permissions)
+        {
+            byte mapBlock = GetTile(x, y, z);
+
+            if (type > 49)
+            {
+                if (type == Blocks.unflood && !permissions.CanBuildLiquids) return false;
+                if (type == Blocks.door || type == Blocks.irondoor || type == Blocks.darkgreydoor && !permissions.CanEditDoors) return false;
+            }
+            return true;
+        }
+
         public int CoordsToIndex(short x, short y, short z)
         {
             return (y * this.depth + z) * this.width + x;
